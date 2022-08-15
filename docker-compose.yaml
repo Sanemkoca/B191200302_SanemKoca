@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql:
+    build: ./.docker/mysql
+    image: b191200302-mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: b191200302
+    volumes:
+      - mysql_database:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+  php:
+    build: ./.docker/php
+    image: b191200302-php:latest
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - '9000:9000'
+    depends_on:
+      - mysql
+
+  nginx:
+    build: ./.docker/nginx
+    image: b191200302-nginx:latest
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - '8001:80'
+    depends_on:
+      - php
+
+volumes:
+  mysql_database:
