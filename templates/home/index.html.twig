@@ -3,5 +3,20 @@
 {% block title %}Deneme{% endblock %}
 
 {% block body %}
-    IP Adresiniz: {{ userIp }}
+    <div class="container">
+        <div class="text-center mt-3">
+            IP Adresiniz
+            <h1>{{ userIp }}</h1>
+        </div>
+        <div class="text-center mt-5">
+            <button type="button" class="btn btn-warning" id="ip-show-button">IP Adreslerini Listele</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('button#ip-show-button').on('click', function () {
+                alert('ASD');
+            });
+        });
+    </script>
 {% endblock %}

@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Ip;
+use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,9 +15,18 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(Request $request): Response
+    public function index(Request $request, ManagerRegistry $managerRegistry): Response
     {
+        $em = $managerRegistry->getManager();
+
         $userIp = (string)$request->server->get('REMOTE_ADDR');
+
+        $requestAddIp = new Ip();
+        $requestAddIp->setIp($userIp);
+        $requestAddIp->setDate(new DateTime());
+        $em->persist($requestAddIp);
+
+        //$em->flush();
 
         return $this->render('home/index.html.twig', [
             'userIp' => $userIp,
