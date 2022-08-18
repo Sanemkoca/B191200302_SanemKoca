@@ -19,10 +19,6 @@ class HomeController extends AbstractController
     {
         $em = $managerRegistry->getManager();
 
-        dump($request->server, $request->headers);
-
-        exit;
-
         $userIp = (string) $request->server->get('REMOTE_ADDR');
 
         $requestAddIp = new Ip();
