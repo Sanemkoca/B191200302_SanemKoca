@@ -19,14 +19,14 @@ class HomeController extends AbstractController
     {
         $em = $managerRegistry->getManager();
 
-        $userIp = (string)$request->server->get('REMOTE_ADDR');
+        $userIp = (string) $request->server->get('REMOTE_ADDR');
 
         $requestAddIp = new Ip();
         $requestAddIp->setIp($userIp);
         $requestAddIp->setDate(new DateTime());
         $em->persist($requestAddIp);
 
-        //$em->flush();
+        // $em->flush();
 
         return $this->render('home/index.html.twig', [
             'userIp' => $userIp,
