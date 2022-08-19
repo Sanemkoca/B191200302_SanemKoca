@@ -1,22 +1,42 @@
-{% extends 'base.html.twig' %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IP Göster</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
 
-{% block title %}Deneme{% endblock %}
-
-{% block body %}
-    <div class="container">
-        <div class="text-center mt-3">
-            IP Adresiniz
-            <h1>{{ userIp }}</h1>
-        </div>
-        <div class="text-center mt-5">
-            <button type="button" class="btn btn-warning" id="ip-show-button">IP Adreslerini Listele</button>
-        </div>
+</head>
+<body>
+<div class="container">
+    <div class="text-center mt-3">
+        IP Adresiniz
+        <h1>{{ userIp }}</h1>
     </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('button#ip-show-button').on('click', function () {
-                alert('ASD');
-            });
+    <div class="text-center mt-5">
+        <button type="button" class="btn btn-warning" id="ip-show-button">IP Adreslerini Listele</button>
+    </div>
+    <div class="ip-list-area"></div>
+</div>
+
+<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/axios.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('button[type=button]#ip-show-button').on('click', async function () {
+            try {
+                console.log(await axios.get('{{ path('app_ip_list') }}'));
+                return;
+                console.log(data);
+                return;
+                if (!data.status) alert(data.message);
+
+            } catch (e) {
+                console.log(e);
+            }
         });
-    </script>
-{% endblock %}
+    });
+</script>
+</body>
+</html>
