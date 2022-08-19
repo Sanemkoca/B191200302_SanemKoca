@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -31,7 +32,7 @@ class HomeController extends AbstractController
         $requestAddIp->setDate(new DateTime());
         $em->persist($requestAddIp);
 
-        // $em->flush();
+        $em->flush();
 
         return $this->render('home/index.html.twig', [
             'userIp' => $userIp,
@@ -44,8 +45,11 @@ class HomeController extends AbstractController
     public function list(IpRepository $ipRepository): JsonResponse
     {
         try {
-            throw new Exception('test');
             $ips = $ipRepository->findBy([], ['id' => 'DESC']);
+
+            if (count($ips) < 1){
+                throw new NotFoundHttpException('Kayıt bulunamadı.');
+            }
 
             $ipList = array_map(function (Ip $ip) {
                 /** @var DateTime $date */
